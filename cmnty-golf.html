@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMNTY Golf</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --black: #0a0a0a;
+    --gold: #C9A227;
+    --gold-light: #E8C14A;
+    --white: #f5f3ee;
+    --gray: #1a1a1a;
+    --text-muted: #888;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 48px;
+    background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  nav ul {
+    display: flex; gap: 40px; list-style: none;
+  }
+
+  nav ul a {
+    text-decoration: none; color: var(--white);
+    font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+    opacity: 0.7; transition: opacity 0.3s, color 0.3s;
+  }
+
+  nav ul a:hover { opacity: 1; color: var(--gold); }
+
+  .nav-cta {
+    background: var(--gold); color: var(--black) !important;
+    padding: 10px 24px; opacity: 1 !important;
+    font-weight: 500;
+  }
+
+  .nav-cta:hover { background: var(--gold-light) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: 
+      linear-gradient(to top, var(--black) 20%, transparent 60%),
+      linear-gradient(135deg, rgba(201,162,39,0.08) 0%, transparent 50%),
+      url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1800&q=80') center/cover no-repeat;
+  }
+
+  .hero-tag {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+    opacity: 0; animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    position: relative;
+    opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    -webkit-text-stroke: 1px var(--gold);
+    color: transparent;
+  }
+
+  .hero-sub {
+    margin-top: 28px;
+    font-size: 15px; font-weight: 300; line-height: 1.7;
+    max-width: 480px; color: rgba(245,243,238,0.65);
+    opacity: 0; animation: fadeUp 0.8s 0.7s forwards;
+  }
+
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 48px;
+    opacity: 0; animation: fadeUp 0.8s 0.9s forwards;
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 40px; color: var(--gold); line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-muted); margin-top: 4px;
+  }
+
+  .hero-scroll {
+    position: absolute; bottom: 40px; right: 48px;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text-muted);
+    opacity: 0; animation: fadeUp 0.8s 1.2s forwards;
+  }
+
+  .hero-scroll::after {
+    content: ''; width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollLine 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollLine {
+    0%, 100% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); }
+  }
+
+  /* SECTIONS */
+  section { padding: 120px 48px; }
+
+  .section-label {
+    font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    line-height: 1; letter-spacing: 2px;
+  }
+
+  /* DIVIDER */
+  .gold-line {
+    width: 64px; height: 2px;
+    background: var(--gold); margin: 32px 0;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center; margin-top: 64px;
+  }
+
+  .about-text p {
+    font-size: 17px; line-height: 1.8; color: rgba(245,243,238,0.7);
+    margin-bottom: 20px;
+  }
+
+  .about-text .pullquote {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px; color: var(--gold); letter-spacing: 1px;
+    line-height: 1.2; margin: 32px 0;
+  }
+
+  .pillars {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  }
+
+  .pillar {
+    background: var(--gray); padding: 32px 28px;
+    border-top: 2px solid transparent;
+    transition: border-color 0.3s;
+    cursor: default;
+  }
+
+  .pillar:hover { border-color: var(--gold); }
+
+  .pillar-icon {
+    font-size: 28px; margin-bottom: 12px;
+  }
+
+  .pillar h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px; letter-spacing: 2px; color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .pillar p {
+    font-size: 13px; color: var(--text-muted); line-height: 1.6;
+  }
+
+  /* FORMAT */
+  .format-section { background: var(--gray); }
+
+  .format-steps {
+    display: flex; gap: 0; margin-top: 64px; position: relative;
+  }
+
+  .format-steps::before {
+    content: ''; position: absolute;
+    top: 30px; left: 30px; right: 30px; height: 1px;
+    background: linear-gradient(to right, var(--gold), transparent);
+  }
+
+  .step {
+    flex: 1; text-align: center; padding: 0 20px;
+    position: relative;
+  }
+
+  .step-num {
+    width: 60px; height: 60px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px; color: var(--gold);
+    background: var(--gray);
+    position: relative; z-index: 1;
+  }
+
+  .step h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: 2px;
+    color: var(--white); margin-bottom: 8px;
+  }
+
+  .step p {
+    font-size: 12px; color: var(--text-muted); line-height: 1.6;
+  }
+
+  /* SPONSORSHIP */
+  .tiers-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2px; margin-top: 64px;
+  }
+
+  .tier {
+    padding: 40px 28px; position: relative; overflow: hidden;
+    cursor: default; transition: transform 0.3s;
+  }
+
+  .tier:hover { transform: translateY(-4px); }
+
+  .tier-presenting { background: #111; border-top: 3px solid var(--gold); }
+  .tier-activation { background: #181400; border-top: 3px solid var(--gold-light); }
+  .tier-beverage { background: #0f0f0f; border-top: 3px solid #888; }
+  .tier-merch { background: #111; border-top: 3px solid #555; }
+
+  .tier-badge {
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .tier-presenting .tier-badge { color: var(--gold); }
+  .tier-activation .tier-badge { color: var(--gold-light); }
+  .tier-beverage .tier-badge { color: #aaa; }
+  .tier-merch .tier-badge { color: #777; }
+
+  .tier h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 30px; letter-spacing: 2px;
+    line-height: 1; margin-bottom: 8px;
+  }
+
+  .tier-price {
+    font-size: 13px; color: var(--gold);
+    margin-bottom: 24px; font-weight: 500;
+  }
+
+  .tier-features {
+    list-style: none;
+  }
+
+  .tier-features li {
+    font-size: 12px; color: rgba(245,243,238,0.55);
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+    line-height: 1.4;
+  }
+
+  .tier-features li::before {
+    content: '—'; color: var(--gold); margin-right: 8px;
+  }
+
+  .tier-avail {
+    margin-top: 24px;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* AUDIENCE */
+  .audience-section {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .audience-visual {
+    position: relative;
+  }
+
+  .audience-visual img {
+    width: 100%; aspect-ratio: 4/5;
+    object-fit: cover; filter: grayscale(30%);
+  }
+
+  .audience-visual::after {
+    content: '';
+    position: absolute; inset: 0;
+    border: 1px solid rgba(201,162,39,0.3);
+    transform: translate(12px, 12px);
+    pointer-events: none;
+  }
+
+  .audience-list {
+    list-style: none; margin-top: 40px;
+  }
+
+  .audience-list li {
+    display: flex; align-items: center; gap: 16px;
+    padding: 18px 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+    font-size: 15px; color: rgba(245,243,238,0.75);
+  }
+
+  .audience-list li::before {
+    content: ''; width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+  }
+
+  /* WHY */
+  .why-section { background: var(--gray); }
+
+  .why-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 2px; margin-top: 64px;
+  }
+
+  .why-card {
+    background: var(--black); padding: 48px 40px;
+    position: relative; overflow: hidden;
+  }
+
+  .why-card::before {
+    content: attr(data-num);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 120px; color: rgba(201,162,39,0.04);
+    position: absolute; top: -20px; right: 20px;
+    line-height: 1;
+  }
+
+  .why-card h4 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 26px; letter-spacing: 2px;
+    color: var(--white); margin-bottom: 12px;
+  }
+
+  .why-card p {
+    font-size: 14px; color: var(--text-muted); line-height: 1.7;
+  }
+
+  /* CONTACT */
+  .contact-inner {
+    max-width: 680px; margin: 0 auto; text-align: center;
+  }
+
+  .contact-inner .section-label { justify-content: center; display: flex; }
+  .contact-inner .section-title { margin-bottom: 20px; }
+
+  .contact-inner p {
+    font-size: 16px; color: rgba(245,243,238,0.6);
+    line-height: 1.7; margin-bottom: 48px;
+  }
+
+  .contact-form {
+    display: flex; flex-direction: column; gap: 16px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  input, textarea, select {
+    background: var(--gray); border: 1px solid rgba(255,255,255,0.08);
+    color: var(--white); padding: 16px 20px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    outline: none; transition: border-color 0.3s;
+    width: 100%;
+  }
+
+  input::placeholder, textarea::placeholder { color: var(--text-muted); }
+  input:focus, textarea:focus, select:focus { border-color: var(--gold); }
+  textarea { resize: none; height: 120px; }
+
+  select option { background: var(--gray); }
+
+  .btn-primary {
+    background: var(--gold); color: var(--black);
+    padding: 18px 48px; border: none; cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: 3px;
+    transition: background 0.3s, transform 0.2s;
+    display: inline-block; text-decoration: none;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 40px 48px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px; letter-spacing: 4px;
+  }
+
+  .footer-logo span { color: var(--gold); }
+
+  footer p {
+    font-size: 12px; color: var(--text-muted); letter-spacing: 1px;
+  }
+
+  .footer-tagline {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* MOBILE */
+  @media (max-width: 900px) {
+    nav { padding: 20px 24px; }
+    nav ul { display: none; }
+    section { padding: 80px 24px; }
+    .hero { padding: 0 24px 60px; }
+    .about-grid, .audience-section { grid-template-columns: 1fr; gap: 40px; }
+    .tiers-grid { grid-template-columns: 1fr 1fr; }
+    .format-steps { flex-direction: column; gap: 32px; }
+    .format-steps::before { display: none; }
+    .why-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+
+  @media (max-width: 600px) {
+    .tiers-grid { grid-template-columns: 1fr; }
+    .pillars { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">CMNTY<span>.</span>GOLF</a>
+  <ul>
+    <li><a href="#about">About</a></li>
+    <li><a href="#format">The Experience</a></li>
+    <li><a href="#sponsorship">Partner</a></li>
+    <li><a href="#contact" class="nav-cta">Get Involved</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div style="position:relative; z-index:2;">
+    <p class="hero-tag">Angeles National Invitational &nbsp;·&nbsp; Hosted by Don Merkin & Spoety</p>
+    <h1>CMNTY<br><em>GOLF</em></h1>
+    <p class="hero-sub">A high-engagement golf experience built for the people who influence culture. This is not a tournament — it's a movement. Premium. Social. Modern.</p>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">144</div>
+        <div class="stat-label">Players</div>
+      </div>
+      <div>
+        <div class="stat-num">6</div>
+        <div class="stat-label">Activations</div>
+      </div>
+      <div>
+        <div class="stat-num">36</div>
+        <div class="stat-label">Foursomes</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll">Scroll</div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="fade-in">
+    <p class="section-label">What This Is</p>
+    <h2 class="section-title">Exclusively<br>Inclusive</h2>
+  </div>
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>CMNTY Golf is not your grandfather's tournament. It's where competitive golf collides with lifestyle, music, and content culture — all wrapped in a day designed to be remembered and shared.</p>
+      <div class="pullquote">"For the CMNTY,<br>by the CMNTY."</div>
+      <p>We don't just host events — we build moments brands want to be part of. Every detail, every activation, every shot is crafted for authentic engagement and maximum cultural resonance.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">🏌️</div>
+        <h4>Competitive Golf</h4>
+        <p>Shotgun start, real competition, real stakes across 36 foursomes.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🎵</div>
+        <h4>Music Energy</h4>
+        <p>DJ-driven check-in and post-round social. Vibes from first tee to last drink.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">👕</div>
+        <h4>Lifestyle Culture</h4>
+        <p>Style-forward golfers, fashion drops, and a crowd that moves the culture.</p>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">📸</div>
+        <h4>Content First</h4>
+        <p>Every moment is built to live beyond the day — social, video, photo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMAT -->
+<section id="format" class="format-section">
+  <div class="fade-in">
+    <p class="section-label">Event Format</p>
+    <h2 class="section-title">How the<br>Day Flows</h2>
+    <div class="gold-line"></div>
+    <p style="color:var(--text-muted); font-size:15px;">Built for flow, engagement, and shareable moments at every turn.</p>
+  </div>
+  <div class="format-steps fade-in">
+    <div class="step">
+      <div class="step-num">01</div>
+      <h4>Shotgun Start</h4>
+      <p>36 foursomes hit all holes simultaneously. No waiting, pure energy.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <h4>DJ Check-In</h4>
+      <p>The vibe starts before the first swing. Live DJ sets the tone all day.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <h4>6 Activations</h4>
+      <p>Branded on-course experiences woven into the round at key moments.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <h4>Premium F&B</h4>
+      <p>Curated food and beverage throughout — quality that matches the crowd.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">05</div>
+      <h4>Content Capture</h4>
+      <p>Pro photo & video on every hole. Content that lives long after the day.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SPONSORSHIP -->
+<section id="sponsorship">
+  <div class="fade-in">
+    <p class="section-label">Partnership Opportunities</p>
+    <h2 class="section-title">Why Brands<br>Win Here</h2>
+    <div class="gold-line"></div>
+    <p style="color:var(--text-muted); max-width: 560px; font-size:15px; line-height:1.7;">This is earned attention, not rented space. Brands are woven into the experience — not slapped on a banner. Your audience engages directly, and the content lives far beyond event day.</p>
+  </div>
+  <div class="tiers-grid fade-in">
+    <div class="tier tier-presenting">
+      <p class="tier-badge">⬛ Presenting Partner</p>
+      <h3>Title Partner</h3>
+      <p class="tier-price">$25,000 – $35,000 &nbsp;·&nbsp; 1 available</p>
+      <ul class="tier-features">
+        <li>Event naming rights</li>
+        <li>Logo on all signage</li>
+        <li>Custom on-course activation</li>
+        <li>Product integration or gifting</li>
+        <li>Host mentions throughout</li>
+        <li>Content capture + recap</li>
+        <li>Right of refusal — future events</li>
+      </ul>
+      <p class="tier-avail">Top-tier cultural credibility</p>
+    </div>
+    <div class="tier tier-activation">
+      <p class="tier-badge">🟡 Activation Partner</p>
+      <h3>Own a Moment</h3>
+      <p class="tier-price">$7,500 – $12,500 &nbsp;·&nbsp; 6 available</p>
+      <ul class="tier-features">
+        <li>Naming rights to one activation</li>
+        <li>Signage + experiential integration</li>
+        <li>Direct player interaction</li>
+        <li>Product sampling or giveaway</li>
+        <li>Dedicated content capture</li>
+        <li>Post-event social tag</li>
+      </ul>
+      <p class="tier-avail">Hands-on with every group</p>
+    </div>
+    <div class="tier tier-beverage">
+      <p class="tier-badge">🥤 Beverage Partner</p>
+      <h3>Keep It Moving</h3>
+      <p class="tier-price">$10,000 – $15,000 &nbsp;·&nbsp; 2 available</p>
+      <ul class="tier-features">
+        <li>Branded bar or beverage cart</li>
+        <li>Logo at all service points</li>
+        <li>Custom drink naming</li>
+        <li>High-volume impressions</li>
+        <li>Peak-moment content capture</li>
+      </ul>
+      <p class="tier-avail">Where the vibes live all day</p>
+    </div>
+    <div class="tier tier-merch">
+      <p class="tier-badge">🎁 Merch / Gifting</p>
+      <h3>Take-Home Impact</h3>
+      <p class="tier-price">$3,500 – $7,500 &nbsp;·&nbsp; Limited spots</p>
+      <ul class="tier-features">
+        <li>Product in all player gift bags</li>
+        <li>On-site merch table placement</li>
+        <li>Brand in recap content</li>
+      </ul>
+      <p class="tier-avail">Your brand leaves with every player</p>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIENCE -->
+<section style="background: var(--gray);">
+  <div class="audience-section fade-in">
+    <div>
+      <p class="section-label">The Audience</p>
+      <h2 class="section-title">Who You're<br>Reaching</h2>
+      <div class="gold-line"></div>
+      <p style="color:var(--text-muted); font-size:15px; line-height:1.7; max-width:420px;">144 players + invited guests. A high concentration of tastemakers, decision-makers, and culture-shapers — all brand-loyal and purchase-ready.</p>
+      <ul class="audience-list">
+        <li>Ages 25 – 55</li>
+        <li>Style-forward golfers</li>
+        <li>Entrepreneurs, creatives, agency leaders</li>
+        <li>Strong social media presence</li>
+        <li>Brand-loyal & purchase-ready</li>
+      </ul>
+    </div>
+    <div class="audience-visual">
+      <img src="https://images.unsplash.com/photo-1591491653056-4e9a9c5a5b3a?w=800&q=80" alt="Golfers at event" onerror="this.style.background='#1a1a1a'; this.removeAttribute('src')">
+    </div>
+  </div>
+</section>
+
+<!-- WHY CMNTY -->
+<section class="why-section">
+  <div class="fade-in">
+    <p class="section-label">Why CMNTY Golf</p>
+    <h2 class="section-title">Culture +<br>Execution</h2>
+  </div>
+  <div class="why-grid fade-in">
+    <div class="why-card" data-num="01">
+      <h4>Authentic Engagement</h4>
+      <p>No cluttered banners or forced mentions. Players engage directly with brands as part of the experience — not background noise.</p>
+    </div>
+    <div class="why-card" data-num="02">
+      <h4>Style-Forward Audience</h4>
+      <p>A room full of tastemakers who buy what they believe in. Influence doesn't get more targeted than this.</p>
+    </div>
+    <div class="why-card" data-num="03">
+      <h4>Repeatable Partnership Model</h4>
+      <p>First right of refusal for presenting partners. Build brand equity year over year with the same loyal community.</p>
+    </div>
+    <div class="why-card" data-num="04">
+      <h4>Content Lives On</h4>
+      <p>Pro photo library, social-first video, full event recap. This event is designed to live online long after the final putt.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner fade-in">
+    <p class="section-label">Let's Build Something</p>
+    <h2 class="section-title">Get Involved</h2>
+    <div class="gold-line" style="margin: 20px auto 32px;"></div>
+    <p>Ready to partner with CMNTY Golf? We'll customize a package that aligns with your brand goals. Reach out below and Don Merkin will be in touch.</p>
+    <form class="contact-form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <input type="text" placeholder="First Name">
+        <input type="text" placeholder="Last Name">
+      </div>
+      <input type="email" placeholder="Email Address">
+      <input type="text" placeholder="Brand / Company">
+      <select>
+        <option value="" disabled selected>Sponsorship Interest</option>
+        <option>Presenting Partner ($25K–$35K)</option>
+        <option>Activation Partner ($7.5K–$12.5K)</option>
+        <option>Beverage Partner ($10K–$15K)</option>
+        <option>Merch / Gifting ($3.5K–$7.5K)</option>
+        <option>General Inquiry</option>
+      </select>
+      <textarea placeholder="Tell us about your brand and goals..."></textarea>
+      <button type="submit" class="btn-primary">Send Inquiry</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">CMNTY<span>.</span>GOLF</div>
+  <p class="footer-tagline">Premium · Social · Modern</p>
+  <p>© 2025 CMNTY Golf &nbsp;·&nbsp; Angeles National Golf Club</p>
+</footer>
+
+<script>
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.textContent = 'Sent ✓';
+    btn.style.background = '#2a6e2a';
+    btn.style.color = '#fff';
+  }
+</script>
+</body>
+</html>
